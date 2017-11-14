@@ -55,13 +55,13 @@ class QuestionViewController: UIViewController {
         var path: String
         if (isNewData) {
             path = NSTemporaryDirectory() + "quiz_data.json"
+            let url = URL(fileURLWithPath: path)
+            let data = try! Data(contentsOf: url)
+            json = try! JSONSerialization.jsonObject(with: data, options: [])
         } else {
-            path = Bundle.main.path(forResource: "quiz_default_data", ofType: "json", inDirectory: "quiz_default.bundle")!
+            let asset = NSDataAsset(name: "quiz_default_data", bundle: Bundle.main)
+            json = try! JSONSerialization.jsonObject(with: asset!.data, options: [])
         }
-        let url = URL(fileURLWithPath: path)
-        let data = try! Data(contentsOf: url)
-        json = try! JSONSerialization.jsonObject(with: data, options: [])
-
         subjects = self.json as! [Any]
     }
     
