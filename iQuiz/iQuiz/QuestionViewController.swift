@@ -56,7 +56,7 @@ class QuestionViewController: UIViewController {
         if (isNewData) {
             path = NSTemporaryDirectory() + "quiz_data.json"
         } else {
-            path = Bundle.main.path(forResource: "quiz_default_data", ofType: "json")!
+            path = Bundle.main.path(forResource: "quiz_default_data", ofType: "json", inDirectory: "quiz_default.bundle")!
         }
         let url = URL(fileURLWithPath: path)
         let data = try! Data(contentsOf: url)

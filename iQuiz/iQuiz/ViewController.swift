@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private var subjects: [Any] = []
     private let imageNames = ["math", "shield", "science"]
-    private let defaultURL = "https://tednewardsandbox.site44.com/questions.json"
+    private let defaultURL = "https://tednewardsandboxx.site44.com/questions.json"
     private var json: Any?
     private var isSuccessful = false
     @IBOutlet weak var subjectTable: UITableView!
@@ -92,7 +92,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     private func formatData() {
         if (!isSuccessful) {
-            let path = Bundle.main.path(forResource: "quiz_default_data", ofType: "json")!
+            let path = Bundle.main.path(forResource: "quiz_default_data", ofType: "json", inDirectory: "quiz_default.bundle")!
             let url = URL(fileURLWithPath: path)
             let data = try! Data(contentsOf: url)
             json = try! JSONSerialization.jsonObject(with: data, options: [])
