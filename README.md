@@ -1,2 +1,2 @@
 # iQuiz
-INFO449 - Assignment 9
+INFO449 - Assignment 9 & 10
