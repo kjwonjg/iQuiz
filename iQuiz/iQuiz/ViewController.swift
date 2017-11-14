@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private var subjects: [Any] = []
     private let imageNames = ["math", "shield", "science"]
-    private let defaultURL = "https://tednewardsandboxx.site44.com/questions.json"
+    private let defaultURL = "https://tednewardsandbox.site44.com/questions.json"
     private var json: Any?
     private var isSuccessful = false
     @IBOutlet weak var subjectTable: UITableView!
