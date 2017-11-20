@@ -42,17 +42,15 @@ class QuestionViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(self.backToList(sender:)))
-        if (isSuccssful) {
-            readJSON(isSuccssful)
-        } else {
-            readJSON(isSuccssful)
-        }
+        readJSON(isSuccssful)
+
         changeColor()
         formatQuestions()
     }
     
     private func readJSON(_ isNewData: Bool) {
         var path: String
+        
         if (isNewData) {
             path = NSTemporaryDirectory() + "quiz_data.json"
             let url = URL(fileURLWithPath: path)

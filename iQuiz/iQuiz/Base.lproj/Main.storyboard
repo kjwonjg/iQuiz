@@ -19,15 +19,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iQuiz" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gSC-zF-Kd0">
-                                <rect key="frame" x="152" y="45" width="71.5" height="36"/>
+                                <rect key="frame" x="152" y="89" width="71.5" height="36"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XyO-JB-vIo">
-                                <rect key="frame" x="0.0" y="106" width="375" height="561"/>
+                                <rect key="frame" x="0.0" y="150" width="375" height="517"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ZYk-Ul-t0i">
+                                <rect key="frame" x="177" y="101" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -37,6 +40,9 @@
                             <constraint firstItem="gSC-zF-Kd0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="25" id="JwV-fW-kb2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="XyO-JB-vIo" secondAttribute="bottom" id="LlD-GT-DGk"/>
                             <constraint firstItem="XyO-JB-vIo" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Vok-S9-Amf"/>
+                            <constraint firstItem="ZYk-Ul-t0i" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="bEq-U7-1bR"/>
+                            <constraint firstItem="ZYk-Ul-t0i" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="37" id="dnF-ik-MiA"/>
+                            <constraint firstItem="XyO-JB-vIo" firstAttribute="top" secondItem="ZYk-Ul-t0i" secondAttribute="bottom" constant="29" id="rkd-8W-AiL"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -48,6 +54,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="iQuizLabel" destination="gSC-zF-Kd0" id="w8A-uX-2fP"/>
+                        <outlet property="spinner" destination="ZYk-Ul-t0i" id="6iA-uk-aOU"/>
                         <outlet property="subjectTable" destination="XyO-JB-vIo" id="vj1-dn-4EV"/>
                         <segue destination="4J4-rc-UIT" kind="show" identifier="QuestionSegue" id="ScJ-nv-nsk"/>
                     </connections>
@@ -342,7 +350,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="GcW-Ki-T8b"/>
-        <segue reference="OAQ-ps-3Wb"/>
+        <segue reference="ScJ-nv-nsk"/>
+        <segue reference="qvT-oL-B1f"/>
     </inferredMetricsTieBreakers>
 </document>

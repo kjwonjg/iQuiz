@@ -15,17 +15,39 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     private var json: Any?
     private var isSuccessful = false
     @IBOutlet weak var subjectTable: UITableView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet weak var iQuizLabel: UILabel!
     
     @IBAction func settingPressed(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Setting Alert", message: "Settings go here", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let alert = UIAlertController(title: "Setting", message: "Enter URL for different quiz", preferredStyle: .alert)
+        
+        let checkBtn = UIAlertAction(title: "Check now", style: .default, handler: {
+            check -> Void in
+            self.spinner.startAnimating()
+            self.iQuizLabel.text = ""
+            let newURL = alert.textFields![0] as UITextField
+            self.retrieveData(newURL.text!)
+        })
+        
+        let cancelBtn = UIAlertAction(title: "Cancel", style: .default, handler: {_ in NSLog("Cancel Pressed")
+            self.spinner.stopAnimating()
+            self.iQuizLabel.text = "iQuiz"
+        })
+        
+        alert.addTextField { (textField : UITextField!) -> Void in
+            textField.placeholder = "Enter URL"
+        }
+        
+        alert.addAction(checkBtn)
+        alert.addAction(cancelBtn)
+        
         self.present(alert, animated:true, completion: nil)
     }
     
     public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "subjectCell")
         
@@ -55,7 +77,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             dest.isSuccssful = self.isSuccessful
         }
     }
-    
+
     private func retrieveData(_ target: String?) {
         var targetURL = ""
         if (target == nil) {
@@ -63,25 +85,43 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         } else {
             targetURL = target!
         }
-        
-        guard let url = URL(string: targetURL) else { return }
-        let session = URLSession.shared
-        session.dataTask(with: url) { (data, response, error) in
-            if let response = response {
-                NSLog("\(response)")
-            }
-            
-            if let data = data {
-                do {
-                    self.json = try JSONSerialization.jsonObject(with: data, options: [])
-                    let jsonData = try JSONSerialization.data(withJSONObject: self.json!, options: [])
-                    self.writeJSON(jsonData)
-                    self.isSuccessful = true
-                } catch {
-                    NSLog("\(error)")
+        isSuccessful = false
+        DispatchQueue.global(qos: .userInitiated).async {
+            let downloadGroup = DispatchGroup()
+            guard let url = URL(string: targetURL) else { return }
+            let session = URLSession.shared
+            downloadGroup.enter()
+            session.dataTask(with: url) { (data, response, error) in
+                if let response = response {
+                    NSLog("\(response)")
+                }
+                
+                if let data = data {
+                    do {
+                        self.json = try JSONSerialization.jsonObject(with: data, options: [])
+                        let jsonData = try JSONSerialization.data(withJSONObject: self.json!, options: [])
+                        self.writeJSON(jsonData)
+                        self.isSuccessful = true
+                    } catch {
+                        NSLog("\(error)")
+                    }
+                }
+                downloadGroup.leave()
+            }.resume()
+
+            downloadGroup.wait(timeout: .now() + 2)
+            self.formatData()
+            DispatchQueue.main.async {
+                self.iQuizLabel.text = "iQuiz"
+                self.spinner.stopAnimating()
+                if (self.isSuccessful) {
+                    self.subjectTable.reloadData()
+                } else if (target != nil) {
+                    self.iQuizLabel.text = "No Data Found"
                 }
             }
-        }.resume()
+        }
+
     }
     
     private func writeJSON(_ jsonData: Data) {
@@ -108,7 +148,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.navigationItem.hidesBackButton = true
         
         retrieveData(nil)
-        formatData()
     }
     
     override func didReceiveMemoryWarning() {
